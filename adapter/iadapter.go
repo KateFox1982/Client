@@ -1,6 +1,9 @@
 package adapter
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> commit with html tables"
 // IAdapter интерфейс объединяющие методы двух объектов
 type IAdapter interface {
 	MakeRequestGet() ([]User, error)

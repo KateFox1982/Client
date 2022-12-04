@@ -173,4 +173,7 @@ func (d *DocumentController) GetCertainSizeTable(res http.ResponseWriter, req *h
 	//отправка в браузер
 	res.Write(html)
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> commit with html tables"
