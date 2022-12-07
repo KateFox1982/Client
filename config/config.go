@@ -15,6 +15,7 @@ type Config struct {
 }
 
 var c Config
+
 func init() {
 	cfg, err := ini.Load("my.ini")
 	if err != nil {

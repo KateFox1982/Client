@@ -110,8 +110,8 @@ func (d *DocumentController) GetCertainSizeTable(res http.ResponseWriter, req *h
 	sizeColums, err := strconv.Atoi(sizeCols)
 	if err != nil {
 		m := "Ошибка перевода количества столбцов из string в int "
-		fmt.Println(m,err,)
-		fmt.Fprintf(res,m,err,)
+		fmt.Println(m, err)
+		fmt.Fprintf(res, m, err)
 		return
 	}
 	var sizeRows = params["sizeRows"]
@@ -119,8 +119,8 @@ func (d *DocumentController) GetCertainSizeTable(res http.ResponseWriter, req *h
 	numRows, err := strconv.Atoi(sizeRows)
 	if err != nil {
 		m := "Ошибка перевода количества строк из string в int "
-		fmt.Println(m,err,)
-		fmt.Fprintf(res, m, err,)
+		fmt.Println(m, err)
+		fmt.Fprintf(res, m, err)
 		return
 	}
 	//заголовок таблицы
@@ -173,7 +173,3 @@ func (d *DocumentController) GetCertainSizeTable(res http.ResponseWriter, req *h
 	//отправка в браузер
 	res.Write(html)
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> commit with html tables"

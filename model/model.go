@@ -1,4 +1,5 @@
 package model
+
 import (
 	"example.com/kate/adapter"
 	"example.com/kate/adapterType"
@@ -31,16 +32,16 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 	user, err := d.adapter.MakeRequestGet()
 	if err != nil {
 		m := "Ошибка выполнеия 1 функции получения информации о всех пользователях"
-		fmt.Println(m,err,)
+		fmt.Println(m, err)
 		return []adapter.User{}, err
 	}
-	fmt.Println("Переданная структура",	user,)
+	fmt.Println("Переданная структура", user)
 	//отправление структуры БД в метод адаптера Min, для получения минимального id
 	IdMin := d.adapter.Min(user)
 	//отправление структуры БД в метод адаптера Max, для получения максимального id
 	IdMax := d.adapter.Max(user)
-	fmt.Println("Максимальное значение",IdMax,)
-	fmt.Println("Минимальное значение",	IdMin,)
+	fmt.Println("Максимальное значение", IdMax)
+	fmt.Println("Минимальное значение", IdMin)
 	//Обращение к методу адаптера к изменению самого минимального по id значения БД
 	var user1 adapter.User
 	user1 = adapter.User{
@@ -55,7 +56,7 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 	_, err = d.adapter.MakeRequestUpdate(user1)
 	if err != nil {
 		m := "Ошибка выполнеия  функции изменения пользователя"
-		fmt.Println(m,err,)
+		fmt.Println(m, err)
 		return []adapter.User{}, err
 	}
 
@@ -63,7 +64,7 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 	_, err = d.adapter.MakeRequestDelete(IdMax)
 	if err != nil {
 		m := "Ошибка выполнеия  функции удаления пользователя"
-		fmt.Println(m, err,)
+		fmt.Println(m, err)
 		return []adapter.User{}, err
 	}
 
@@ -72,20 +73,18 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 		Name: "RED",
 		Sale: 895,
 	}
-
 	//обращение к модели адаптера к созданию нового значения БД
 	_, err = d.adapter.MakeRequestCreate(user3)
 	if err != nil {
 		m := "Ошибка выполнеия  функции создания пользователя"
-		fmt.Println(m,err,)
+		fmt.Println(m, err)
 		return []adapter.User{}, err
 	}
-
 	//обращение к модели адаптера к получению новых значений БД
 	users, err := d.adapter.MakeRequestGet()
 	if err != nil {
 		m := "Ошибка выполнеия 2 функции получения информации о всех пользователях: %s"
-		fmt.Println(m,err,)
+		fmt.Println(m, err)
 		return []adapter.User{}, err
 	}
 	fmt.Println(users)

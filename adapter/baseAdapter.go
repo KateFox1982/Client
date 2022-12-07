@@ -4,9 +4,9 @@ import "fmt"
 
 type BaseAdapter struct {
 }
+
 // Min метод вычисление минимального id
 func (m *BaseAdapter) Min(p []User) int {
-
 	var k []int
 
 	for _, rec := range p {
@@ -20,14 +20,12 @@ func (m *BaseAdapter) Min(p []User) int {
 	}
 	return IdMin
 }
+
 // Max метод адаптера по определению  максимального значения id
 func (m *BaseAdapter) Max(p []User) int {
 	var k []int
 	for _, rec := range p {
-		k = append(
-			k,
-			rec.ID,
-		)
+		k = append(k, rec.ID)
 	}
 	IdMax := k[0]
 	for _, value := range k {
