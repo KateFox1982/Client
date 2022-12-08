@@ -15,6 +15,7 @@ type Controller struct {
 }
 
 // NewController конструктор контроллера, возращающий экземпляр структуры Controller
+
 func NewController(AdapterType adapterType.AdapterType) *Controller {
 	return &Controller{
 		controller: model.NewModel(AdapterType),
@@ -32,7 +33,8 @@ func (m *Controller) HandleHttp(res http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(res, m, err)
 		return
 	}
-	fmt.Println("Срез структуры перед XML", t)
+	fmt.Println(
+		"Срез структуры перед XML", t)
 	//	установливаем заголовок «Content-Type: application/xml», т.к. потому что мы отправляем данные XML с запросом через роутер
 	res.Header().Set("Content-Type", "application/xml")
 	if err != nil {

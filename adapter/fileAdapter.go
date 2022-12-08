@@ -23,7 +23,10 @@ func NewFileAdapter() (*FileAdapter, error) {
 	file, err := os.Open("file_storage")
 	if err != nil {
 		m := "Ошибка выполнеия открытия файла: %s"
-		fmt.Println(m, err)
+		fmt.Println(
+			m,
+			err,
+		)
 		return nil, err
 	}
 	//defer file.Close()
@@ -64,19 +67,31 @@ func (f *FileAdapter) MakeRequestGet() ([]User, error) {
 				"\n",
 			)
 		}
-		slice = append(slice, str)
+		slice = append(
+			slice,
+			str,
+		)
 	}
 	k := []User{}
 	//создание слайса из слов
-	word := make([]string, 0)
+	word := make(
+		[]string,
+		0,
+	)
 	for i := 1; i < len(slice); i++ {
 		fmt.Println(slice[i])
-		word = strings.Split(slice[i], "\t")
+		word = strings.Split(
+			slice[i],
+			"\t",
+		)
 		//перевод id из string в int
 		m, err := strconv.Atoi(word[0])
 		if err != nil {
 			m := "Ошибка перевода из string в int: %s"
-			fmt.Println(m, err)
+			fmt.Println(
+				m,
+				err,
+			)
 			return []User{}, err
 		}
 		fmt.Println(m)
@@ -94,6 +109,7 @@ func (f *FileAdapter) MakeRequestGet() ([]User, error) {
 		k = append(k, User{m, p, z})
 	}
 	return k, nil
+
 }
 
 // MakeRequestCreate метод адаптера создания нового значения в файл
@@ -134,11 +150,7 @@ func (f *FileAdapter) MakeRequestCreate(user User) (User, error) {
 		msg := strings.Join(values, "\t")
 		fmt.Println("Получившаяся строка", msg)
 		//запись новой строки в файл
-		f, err := os.OpenFile(
-			"file_storage",
-			os.O_APPEND|os.O_WRONLY,
-			0600,
-		)
+		f, err := os.OpenFile("file_storage", os.O_APPEND|os.O_WRONLY, 0600)
 		if err != nil {
 			fmt.Println("Ошибка открытия файла для записи", err)
 		}
@@ -149,7 +161,6 @@ func (f *FileAdapter) MakeRequestCreate(user User) (User, error) {
 				fmt.Println("Ошибка записи", err)
 			}
 		}
-
 	}
 	return User{}, err
 }
@@ -178,19 +189,13 @@ func (f *FileAdapter) MakeRequestDelete(IdMax int) (User, error) {
 			slice = append(slice, str)
 		}
 	}
-
 	msg := strings.Join(slice, "\n")
 	fmt.Println("Получившаяся строка", msg)
 	//запись всех строк без удаленной строки в файл
-	err := os.WriteFile(
-		"file_storage",
-		[]byte(msg),
-		0666,
-	)
+	err := os.WriteFile("file_storage", []byte(msg), 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	return User{}, err
 }
 
@@ -233,4 +238,7 @@ func (f *FileAdapter) MakeRequestUpdate(user User) (User, error) {
 		log.Fatal(err)
 	}
 	return User{}, err
+}
+func (f *FileAdapter) GetRezultDocumentation() ([]Document, error) {
+	return nil, nil
 }

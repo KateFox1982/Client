@@ -21,7 +21,6 @@ func NewModel(concreteAdapterType adapterType.AdapterType) *Model {
 		m, _ = adapter.NewFileAdapter()
 	}
 	return &Model{adapter: m}
-
 }
 
 // ClientAlgorithmTake метод модели
@@ -49,10 +48,7 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 		Name: "Vova",
 		Sale: 654,
 	}
-	fmt.Println(
-		"user.ID",
-		IdMin,
-	)
+	fmt.Println("user.ID", IdMin)
 	_, err = d.adapter.MakeRequestUpdate(user1)
 	if err != nil {
 		m := "Ошибка выполнеия  функции изменения пользователя"
@@ -89,4 +85,16 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 	}
 	fmt.Println(users)
 	return users, nil
+}
+func (d *Model) GetRezultDocumentation() ([]adapter.Document, error) {
+	//закрытие файла
+	defer d.adapter.Close()
+	//MakeRequestGet получение из адаптера всех пользователей БД
+	document, err := d.adapter.GetRezultDocumentation()
+	if err != nil {
+		m := "Ошибка выполнеия 1 функции получения информации о всех пользователях"
+		fmt.Println(m, err)
+		return []adapter.Document{}, err
+	}
+	return document, err
 }
