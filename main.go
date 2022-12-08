@@ -17,12 +17,7 @@ func main() {
 	flagComand := c.ConcreteAdapterType
 	//получение и считывание значения флага, возможные значения флага берутся из adapterType
 	var concreteAdapterType string
-	flag.StringVar(
-		&concreteAdapterType,
-		"concreteAdapterType",
-		string(flagComand),
-		"",
-	)
+	flag.StringVar(&concreteAdapterType, "concreteAdapterType", string(flagComand), "")
 	flag.Parse()
 	var p adapterType.AdapterType
 	//присваивание считанного значения флага структуре adapterType
@@ -40,35 +35,26 @@ func main() {
 		func(res http.ResponseWriter, req *http.Request) {
 			//userCtrl := controller.NewUserCtrl()
 			con := controller.NewController(p)
-			con.HandleHttp(
-				res,
-				req,
-			)
+			con.HandleHttp(res, req)
 		},
 	).Methods("GET")
-	//router.HandleFunc- регистрация маршрута, с URL оканчивающимся на /document и методом GET, создает новый экземпляр конструктора
+	//router.HandleFunc регистрация маршрута, с URL оканчивающимся на /document и методом GET, создает новый экземпляр конструктора
 	//контроллера, прием-передача параметров метода GetSimpleTable по получению пустой таблицы html
 	router.HandleFunc(
 		"/document",
 		func(res http.ResponseWriter, req *http.Request) {
 			con := controller.NewDocumentController(p)
-			con.GetSimpleTable(
-				res,
-				req,
-			)
+			con.GetSimpleTable(res, req)
 		},
 	).Methods("GET")
-	//router.HandleFunc-регистрация маршрута, с URL оканчивающимся на /complex и методом GET, создает новый экземпляр конструктора
+	//router.HandleFunc регистрация маршрута, с URL оканчивающимся на /complex и методом GET, создает новый экземпляр конструктора
 	//контроллера, прием-передача параметров метода GetComplexTable по получению пустой таблицы html со слитыми в определенном порядке ячейками
 	router.HandleFunc(
 		"/complex",
 		func(res http.ResponseWriter, req *http.Request) {
 			//userCtrl := controller.NewUserCtrl()
 			con := controller.NewDocumentController(p)
-			con.GetComplexTable(
-				res,
-				req,
-			)
+			con.GetComplexTable(res, req)
 		},
 	).Methods("GET")
 	//router.HandleFunc регистрация маршрута, с URL оканчивающимся на /cols/{sizeCols}/rows/{sizeRows} и методом GET, создает новый экземпляр конструктора
@@ -78,20 +64,22 @@ func main() {
 		func(res http.ResponseWriter, req *http.Request) {
 			//userCtrl := controller.NewUserCtrl()
 			con := controller.NewDocumentController(p)
-			con.GetCertainSizeTable(
-				res,
-				req,
-			)
+			con.GetCertainSizeTable(res, req)
 		},
 	).Methods("GET")
 	//router.HandleFunc регистрация маршрута, с URL оканчивающимся на /documentation и методом GET, создает новый экземпляр конструктора
 	//контроллера, прием-передача параметров метода GetDocumentationTable по получению таблицы html с документами, модулями и ошибками
+	router.HandleFunc(
+		"/documentation",
+		func(res http.ResponseWriter, req *http.Request) {
+			//userCtrl := controller.NewUserCtrl()
+			con := controller.NewDocumentController(p)
+			con.GetDocumentationTable(res, req)
+		},
+	).Methods("GET")
 	log.Println("Starting HTTP server on :5000")
 	log.Fatal(
-		http.ListenAndServe(
-			":5000",
-			router,
-		),
+		http.ListenAndServe(":5000", router),
 	)
 
 }
