@@ -11,13 +11,13 @@ import (
 
 // Controller структура используется для конструктора контроллер
 type Controller struct {
-	controller *model.Model
+	model *model.Model
 }
 
 // NewController конструктор контроллера, возращающий экземпляр структуры Controller
 func NewController(AdapterType adapterType.AdapterType) *Controller {
 	return &Controller{
-		controller: model.NewModel(AdapterType),
+		model: model.NewModel(AdapterType),
 	}
 }
 
@@ -26,7 +26,7 @@ func (m *Controller) HandleHttp(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("Сервер запустился")
 
 	//ClientAlgorithmTake метод модели
-	var t, err = m.controller.ClientAlgorithmTake()
+	var t, err = m.model.ClientAlgorithmTake()
 	if err != nil {
 		m := "Ошибка выполнеия контроллера: %s"
 		fmt.Println(m, err)

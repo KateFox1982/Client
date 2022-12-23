@@ -20,3 +20,8 @@ type Error struct {
 	Id    int64  `json:"id"`
 	Title string `json:"title"`
 }
+type Directory struct {
+	Id          int
+	Title       string
+	Directories []Directory
+}
