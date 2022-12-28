@@ -21,7 +21,7 @@ type Error struct {
 	Title string `json:"title"`
 }
 type Directory struct {
-	Id          int
-	Title       string
+	Id          int    `json:"id"`
+	Title       string `json:"title"`
 	Directories []Directory
 }

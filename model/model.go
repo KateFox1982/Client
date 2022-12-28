@@ -91,6 +91,9 @@ func (d *Model) ClientAlgorithmTake() ([]adapter.User, error) {
 
 	return users, nil
 }
+
+// GetRezultDocumentation метод модели получающий слайс Документов,
+//Модели и Ошибок из адаптера и отправляющий его в контроллер
 func (d *Model) GetRezultDocumentation() ([]adapter.Document, error) {
 	//закрытие файла
 	defer d.adapter.Close()
@@ -103,4 +106,16 @@ func (d *Model) GetRezultDocumentation() ([]adapter.Document, error) {
 	}
 	fmt.Println("Переданная структура", document)
 	return document, err
+}
+
+// GetDirectoriesSlice  метод модели получающий слайс Директорий из адаптера и отправляющий его в контроллер
+func (d *Model) GetDirectoriesSlice() ([]adapter.Directory, error) {
+	directories, err := d.adapter.GetDirectoriesSlice()
+	if err != nil {
+		m := "Ошибка выполнеия 1 функции получения информации о всех пользователях"
+		fmt.Println(m, err)
+		return []adapter.Directory{}, err
+	}
+	fmt.Println("Переданная структура", directories)
+	return directories, err
 }

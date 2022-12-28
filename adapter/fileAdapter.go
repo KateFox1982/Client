@@ -225,3 +225,6 @@ func (f *FileAdapter) MakeRequestUpdate(user User) (User, error) {
 func (f *FileAdapter) GetRezultDocumentation() ([]Document, error) {
 	return nil, nil
 }
+func (f *FileAdapter) GetDirectoriesSlice() ([]Directory, error) {
+	return nil, nil
+}

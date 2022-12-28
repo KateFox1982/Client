@@ -178,6 +178,8 @@ func (m *DataBaseAdapter) MakeRequestUpdate(user User) (User, error) {
 	}
 	return user, err
 }
+
+// GetRezultDocumentation метод получающий от API все документы и привязанные к нему Модули и Ошибки
 func (m *DataBaseAdapter) GetRezultDocumentation() ([]Document, error) {
 	URLGET := UrlMain + "full"
 	req, err := http.NewRequest("GET", URLGET, nil)
@@ -211,4 +213,43 @@ func (m *DataBaseAdapter) GetRezultDocumentation() ([]Document, error) {
 	}
 	fmt.Println("Структура", p)
 	return p, nil
+}
+
+// GetDirectoriesSlice метод модели получающий от API слайс директорий
+func (m *DataBaseAdapter) GetDirectoriesSlice() ([]Directory, error) {
+	fmt.Println("Вошла в адаптер")
+	URLGET := UrlMain + "directories"
+	fmt.Println("URLGET", URLGET)
+	req, err := http.NewRequest("GET", URLGET, nil)
+	if err != nil {
+		fmt.Println("Проблема с адресом", err)
+		return nil, err
+	}
+	res, err := m.HTTPClient.Do(req)
+	if err != nil {
+		fmt.Println("проблема подключения к клиенту", err)
+		return nil, err
+
+	}
+	defer res.Body.Close()
+	if 200 != res.StatusCode {
+		return nil, fmt.Errorf("%s", res.Body)
+	}
+	body, err := ioutil.ReadAll(res.Body) // response body is []byte
+	if err != nil {
+		fmt.Println("Ошибка перевода ответа в строку", err)
+		return nil, err
+
+	}
+	fmt.Println(string(body))
+	fmt.Println("Директоррия вышедшая", []Directory{})
+	directories := []Directory{}
+	fmt.Println("Печать из функции", string(body))
+	err = json.Unmarshal(body, &directories)
+	if err != nil {
+		fmt.Println("Can not unmarshal JSON", err)
+		return []Directory{}, err
+	}
+	fmt.Println("Структура", &directories)
+	return directories, nil
 }

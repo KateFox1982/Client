@@ -7,6 +7,7 @@ type IAdapter interface {
 	MakeRequestUpdate(user User) (User, error)
 	MakeRequestDelete(idMax int) (User, error)
 	GetRezultDocumentation() ([]Document, error)
+	GetDirectoriesSlice() ([]Directory, error)
 	Max(p []User) int
 	Min(p []User) int
 	Close()
