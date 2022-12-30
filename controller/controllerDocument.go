@@ -1,21 +1,14 @@
 package controller
 
 import (
-	"example.com/kate/adapter"
 	"example.com/kate/adapterType"
 	"example.com/kate/model"
+	"example.com/projectApiClient"
 	"fmt"
 	"github.com/gorilla/mux"
-	"strconv"
-	//"log"
 	"net/http"
+	"strconv"
 )
-
-type Directory struct {
-	Id          int    `json:"id"`
-	Title       string `json:"title"`
-	Directories []Directory
-}
 
 // DocumentController структура используется для конструктора контроллер
 type DocumentController struct {
@@ -290,13 +283,22 @@ func (d *DocumentController) GetDocumentationTable(res http.ResponseWriter, req 
 //при условии что вложенная структура имеет рекурсионный вид и количество связей не задано
 func (d *DocumentController) GetDirectoriesTable(res http.ResponseWriter, req *http.Request) {
 	//струтура для примера
-	directories, err := d.model.GetDirectoriesSlice()
+	directories, err := d.model.GetDirectories()
+	fmt.Println("Директория", directories)
 	if err != nil {
 		m := "Ошибка выполнеия контроллера: %s"
 		fmt.Println(m, err)
 		fmt.Fprintf(res, m, err)
 		return
 	}
+	tableAll := getTableResult(directories)
+
+	html := []byte(tableAll)
+	//отправка в браузер
+	res.Write(html)
+}
+
+func getTableResult(directories []projectApiClient.Directory) string {
 
 	tableHead := `<html lang="ru">
 	<table border="1" width="600">
@@ -312,7 +314,7 @@ func (d *DocumentController) GetDirectoriesTable(res http.ResponseWriter, req *h
 		level := 0
 		getSliceColoms(directories[key].Directories, level, &sliceColom)
 	}
-	fmt.Println("sliceColom*", sliceColom)
+
 	// вычисление максимального номера столбца
 	var colomsNum int
 	sumMax := (sliceColom)[0]
@@ -321,7 +323,6 @@ func (d *DocumentController) GetDirectoriesTable(res http.ResponseWriter, req *h
 		if value > sumMax {
 			sumMax = value
 		}
-		fmt.Println("sumMax", sumMax)
 		colomsNum = colomsNum + sumMax
 	}
 	//отправка номера максимального столбца в функцию по построению заголовка таблицы
@@ -364,13 +365,11 @@ func (d *DocumentController) GetDirectoriesTable(res http.ResponseWriter, req *h
 		`</tbody>
 </table>
 </html>`
-	html := []byte(tableAll)
-	//отправка в браузер
-	res.Write(html)
+	return tableAll
 }
 
 //функция, которая рисует строки
-func paintRow(directories []adapter.Directory, coloms int, step int) (tableMidls string) {
+func paintRow(directories []projectApiClient.Directory, coloms int, step int) (tableMidls string) {
 
 	var tableMidle string
 	//цикл для вычисления "голов таблицы и их подсчета, а так же конкатенации строк таблицы
@@ -399,8 +398,8 @@ func paintRow(directories []adapter.Directory, coloms int, step int) (tableMidls
 	return tableMidle
 }
 
-//функция которая показывает количество объединеных слобцов у каждой "головы"
-func colspan(directories adapter.Directory, coloms int, step int) (int, string, int) {
+//функция, которая показывает количество объединеных слобцов у каждой "головы"
+func colspan(directories projectApiClient.Directory, coloms int, step int) (int, string, int) {
 	var lineSeparator string
 	var lineSeparators string
 	num := 0
@@ -424,8 +423,7 @@ func colspan(directories adapter.Directory, coloms int, step int) (int, string, 
 }
 
 //фукция считающая количество столбцов в каждой директории
-func getSliceColoms(directories []adapter.Directory, level int, sliceColomn *[]int) {
-	fmt.Println("Входящая директория в getSliceColoms", directories)
+func getSliceColoms(directories []projectApiClient.Directory, level int, sliceColomn *[]int) {
 
 	level = level + 1
 	*sliceColomn = append(*sliceColomn, level)
@@ -434,12 +432,11 @@ func getSliceColoms(directories []adapter.Directory, level int, sliceColomn *[]i
 
 		getSliceColoms(directories[key].Directories, level, sliceColomn)
 	}
-	fmt.Println("level", level)
 
 }
 
 //функция выдающая количество строчек при слиянии
-func numHeads(directories []adapter.Directory) int {
+func numHeads(directories []projectApiClient.Directory) int {
 	var num int
 	for i := 0; i < len(directories); i++ {
 		if directories[i].Directories == nil {
